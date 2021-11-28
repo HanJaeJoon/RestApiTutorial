@@ -10,3 +10,6 @@
 
 2. Web UI Tutorial
 - https://docs.microsoft.com/en-us/learn/modules/create-razor-pages-aspnet-core/
+
+3. SQLite 연동 + EF Core
+- https://github.com/HanJaeJoon/RestApiTutorial/commit/9358b9c06cb9a20715f518f168a8a98b53939d19
