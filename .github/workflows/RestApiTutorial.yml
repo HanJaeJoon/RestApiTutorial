@@ -1,4 +1,8 @@
 name: Build and deploy .NET Core application to Web App RestApiTutorial
+on:
+  push:
+    branches:
+    - master
 env:
   AZURE_WEBAPP_NAME: RestApiTutorial
   AZURE_WEBAPP_PACKAGE_PATH: RestApiTutorial\publish
