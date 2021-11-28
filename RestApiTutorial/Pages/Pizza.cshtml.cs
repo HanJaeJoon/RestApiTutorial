@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using RestApiTutorial.Data;
 using RestApiTutorial.Models;
 using RestApiTutorial.Services;
 
@@ -7,10 +8,12 @@ namespace RestApiTutorial.Pages
 {
     public class PizzaModel : PageModel
     {
+        private readonly PizzaService _pizzaService;
         private readonly ILogger<PizzaModel> _logger;
 
-        public PizzaModel(ILogger<PizzaModel> logger)
+        public PizzaModel(AppDbContext context, ILogger<PizzaModel> logger)
         {
+            _pizzaService = new PizzaService(context);
             _logger = logger;
         }
 
@@ -28,7 +31,7 @@ namespace RestApiTutorial.Pages
 
         public void OnGet()
         {
-            pizzas = PizzaService.GetAll();
+            pizzas = _pizzaService.GetAll();
         }
 
         public IActionResult OnPost()
@@ -37,12 +40,16 @@ namespace RestApiTutorial.Pages
             {
                 return Page();
             }
-            PizzaService.Add(NewPizza);
+
+            _pizzaService.Add(NewPizza);
+
             return RedirectToPage("Pizza");
         }
+
         public IActionResult OnPostDelete(int id)
         {
-            PizzaService.Delete(id);
+            _pizzaService.Delete(id);
+
             return RedirectToPage("Pizza");
         }
     }

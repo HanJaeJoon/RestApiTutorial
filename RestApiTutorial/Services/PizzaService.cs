@@ -1,44 +1,50 @@
-﻿using RestApiTutorial.Models;
+﻿using RestApiTutorial.Data;
+using RestApiTutorial.Models;
 
 namespace RestApiTutorial.Services;
-public static class PizzaService
+public class PizzaService
 {
-    static List<Pizza> Pizzas { get; }
-    static int nextId = 3;
-    static PizzaService()
+    private readonly AppDbContext _context;
+
+    public PizzaService(AppDbContext context)
     {
-        Pizzas = new List<Pizza>
-        {
-            new Pizza { Id = 1, Name = "Classic Italian", Price = 20.00M, Size = PizzaSize.Large, IsGlutenFree = false },
-            new Pizza { Id = 2, Name = "Veggie", Price = 15.00M, Size = PizzaSize.Small, IsGlutenFree = true }
-        };
+        _context = context;
     }
 
-    public static List<Pizza> GetAll() => Pizzas;
+    public List<Pizza> GetAll() => _context.Pizzas.ToList();
 
-    public static Pizza? Get(int id) => Pizzas.FirstOrDefault(p => p.Id == id);
+    public Pizza? Get(int id) => _context.Pizzas.FirstOrDefault(p => p.Id == id);
 
-    public static void Add(Pizza pizza)
+    public void Add(Pizza pizza)
     {
-        pizza.Id = nextId++;
-        Pizzas.Add(pizza);
+        _context.Pizzas.Add(pizza);
+
+        _context.SaveChanges();
     }
 
-    public static void Delete(int id)
+    public void Delete(int id)
     {
         var pizza = Get(id);
-        if (pizza is null)
-            return;
 
-        Pizzas.Remove(pizza);
+        if (pizza is null)
+        {
+            return;
+        }
+
+        _context.Pizzas.Remove(pizza);
+        _context.SaveChanges();
     }
 
-    public static void Update(Pizza pizza)
+    public void Update(int id, Pizza pizza)
     {
-        var index = Pizzas.FindIndex(p => p.Id == pizza.Id);
-        if (index == -1)
-            return;
+        var oldPizza = Get(id);
 
-        Pizzas[index] = pizza;
+        if (oldPizza is null)
+        {
+            return;
+        }
+
+        _context.Entry(oldPizza).CurrentValues.SetValues(pizza);
+        _context.SaveChanges();
     }
 }
