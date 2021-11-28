@@ -1,5 +1,5 @@
 # DotNet 6.0 Rest Api Tutorial
-- [Web site] https://restapitutorial.azurewebsites.net/
+- [Website] https://restapitutorial.azurewebsites.net/
 - [Swagger API] https://restapitutorial.azurewebsites.net/api
 
 1. Swashbuckle
