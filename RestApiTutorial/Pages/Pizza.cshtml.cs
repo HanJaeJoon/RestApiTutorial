@@ -38,7 +38,12 @@ namespace RestApiTutorial.Pages
                 return Page();
             }
             PizzaService.Add(NewPizza);
-            return RedirectToAction("Get");
+            return RedirectToPage("Pizza");
+        }
+        public IActionResult OnPostDelete(int id)
+        {
+            PizzaService.Delete(id);
+            return RedirectToPage("Pizza");
         }
     }
 }
