@@ -14,5 +14,10 @@
 4. SQLite + EF Core
 - https://github.com/HanJaeJoon/RestApiTutorial/commit/9358b9c06cb9a20715f518f168a8a98b53939d19
 
+---
+
 Dependency Injection
 - https://github.com/dotnet/training-tutorials/blob/master/content/asp.net/getting-started/controller-dependencies.md
+
+Donet 6.0
+- https://forum.dotnetdev.kr/t/net-core-1-net-6-configurationmanager-andrew-lock/2180
