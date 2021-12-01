@@ -19,5 +19,5 @@
 Dependency Injection
 - https://github.com/dotnet/training-tutorials/blob/master/content/asp.net/getting-started/controller-dependencies.md
 
-Donet 6.0
+Dotnet 6.0
 - https://forum.dotnetdev.kr/t/net-core-1-net-6-configurationmanager-andrew-lock/2180
