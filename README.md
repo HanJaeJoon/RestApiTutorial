@@ -21,3 +21,4 @@ Dependency Injection
 
 DotNet 6.0
 - https://forum.dotnetdev.kr/t/net-core-1-net-6-configurationmanager-andrew-lock/2180
+- https://andrewlock.net/exploring-dotnet-6-part-1-looking-inside-configurationmanager-in-dotnet-6/
