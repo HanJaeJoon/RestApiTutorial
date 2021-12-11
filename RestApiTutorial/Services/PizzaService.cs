@@ -1,4 +1,6 @@
-﻿using RestApiTutorial.Data;
+﻿using Dapper;
+using RestApiTutorial.Core;
+using RestApiTutorial.Data;
 using RestApiTutorial.Models;
 
 namespace RestApiTutorial.Services;
@@ -11,7 +13,17 @@ public class PizzaService
         _context = context;
     }
 
-    public List<Pizza> GetAll() => _context.Pizzas.ToList();
+    public List<Pizza> GetAll() 
+    {
+        //var s = new SqliteHelper("Data Source=wwwroot/content/data/database.sqlite").ExecuteQuery<string>(async con =>
+        //{
+        //    var s = await con.QueryFirstOrDefaultAsync("Select id from pizzas");
+
+        //    return s;
+        //});
+
+        return _context.Pizzas.ToList();
+    }
 
     public Pizza? Get(int id) => _context.Pizzas.FirstOrDefault(p => p.Id == id);
 

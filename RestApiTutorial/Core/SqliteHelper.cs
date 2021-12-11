@@ -1,32 +1,74 @@
 ﻿using Dapper;
 using Microsoft.Data.Sqlite;
 using System.Data;
+using System.Transactions;
 
 namespace RestApiTutorial.Core;
 
-public class SqliteHelper
+public class SqliteHelper: IDapperHelper
 {
-    private readonly IDbConnection _connection;
+    private readonly string _connectionString;
 
-    public SqliteHelper(IConfiguration configuration)
+    public SqliteHelper(string connectionString) 
     {
-        _connection = new SqliteConnection(configuration.GetConnectionString("SqliteConnection"));
-        _connection.Open();
+        _connectionString = connectionString;
     }
 
-    private void Excute(string sql)
+    async Task<SqliteConnection> InitializeConnection()
     {
-        var command = _connection.CreateCommand();
-        command.CommandText = sql;
+        var sqlconnection = new SqliteConnection(_connectionString);
+        await sqlconnection.OpenAsync();
 
-        _connection.ExecuteAsync(sql);
+        return sqlconnection;
     }
 
-    private void Select<T>(string sql)
+    public async Task<T> ExecuteQuery<T>(Func<SqliteConnection, Task<T>> operation)
     {
-        var command = _connection.CreateCommand();
-        command.CommandText = sql;
+        try
+        {
+            using var connection = await InitializeConnection();
+            return await operation(connection);
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
 
-        _connection.ExecuteScalar<T>(sql);
+    public async Task ExecuteQueryWithTransaction<T>(Func<SqliteConnection, Task> operation)
+    {
+        using var tscn = new TransactionScope();
+
+        try
+        {
+            using var connection = await InitializeConnection();
+            await operation(connection);
+            tscn.Complete();
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    public async Task ExecuteQuery<T>(Func<SqliteConnection, Task> operation)
+    {
+        using var connection = await InitializeConnection();
+        await operation(connection);
+    }
+
+    public async Task<IEnumerable<T>> GetAll<T>(string sql, object? parameters = null)
+    {
+        return await ExecuteQuery(async con => await con.QueryAsync<T>(sql, parameters));
+    }
+
+    public async Task<T> FirstOrDefaultAsync<T>(string sql, object? parameters = null)
+    {
+        return await ExecuteQuery(async con => await con.QueryFirstOrDefaultAsync<T>(sql, parameters));
+    }
+
+    public async Task<int> Insert<T>(string sql, object? parameters = null)
+    {
+        return await ExecuteQuery<int>(async con => await con.ExecuteAsync(sql, parameters));
     }
 }
