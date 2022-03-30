@@ -1,6 +1,6 @@
 # DotNet 6.0 Rest Api Tutorial
-- [Website] https://restapitutorial.azurewebsites.net/
-- [Swagger API] https://restapitutorial.azurewebsites.net/api
+- ~[Website] https://restapitutorial.azurewebsites.net/~
+- ~[Swagger API] https://restapitutorial.azurewebsites.net/api~
 
 1. Swashbuckle
 - https://github.com/HanJaeJoon/RestApiTutorial/commit/6aff1fcc653b28dfb410a9a2d3ad0c96849d61c4
